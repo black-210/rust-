@@ -1,0 +1,17 @@
+// Build a small summary from a mutable array.
+fn sum_to(limit) {
+    let total = 0;
+    for (let number = 1; number <= limit; number = number + 1) {
+        total = total + number;
+    }
+    return total;
+}
+
+let stages = ["plan", "build", "test"];
+push(stages, "ship");
+let i = 0;
+while i < len(stages) {
+    print "Stage: " + stages[i];
+    i = i + 1;
+}
+print "Sum: " + str(sum_to(10));

@@ -1,232 +1,143 @@
-# RUST++ v0.1 — دليل اللغة
+# RUST++ v1.0 Language Guide
 
-مرجع عملي للغة **RUST++** وامتداد ملفاتها `.rustqq`. اللغة مفسّرة ومكتوبة بـRust، وتركّز في إصدارها الأول على أساسيات البرمجة بصياغة مباشرة وسهلة القراءة.
+RUST++ is a dynamically typed, interpreted language with a small syntax and beginner-friendly built-ins. This guide describes the v1 implementation in this repository. Save programs as `.rustqq` files.
 
-> **حالة الإصدار:** v0.1 لغة تعليمية أولية، وليست مترجماً متوافقاً مع Rust. هذا المرجع يشرح ما ينفذه المفسّر حالياً؛ الميزات غير الموجودة موضّحة صراحة في قسم الحدود.
-
-## البدء
-
-ثبّت [Rust وCargo](https://www.rust-lang.org/tools/install)، ثم شغّل مثال المستودع:
+## Run a program
 
 ```bash
 cargo run -- examples/hello.rustqq
-```
-
-لبناء البرنامج التنفيذي:
-
-```bash
 cargo build --release
 ./target/release/rustpp examples/hello.rustqq
 ```
 
-للدخول إلى الوضع التفاعلي استخدم `cargo run`، واكتب `exit` للخروج. لعرض رقم الإصدار:
+Run `cargo run` without a file for the interactive shell. Use `--help` or `--version` for command-line information.
 
-```bash
-cargo run -- --version
-```
+## Values and variables
 
-## أول برنامج
-
-أنشئ ملفاً باسم `hello.rustqq`:
-
-```rust
-// أول برنامج لك في RUST++
-let name = "العالم";
-print "مرحباً يا " + name;
-```
-
-ثم شغّله:
-
-```bash
-cargo run -- hello.rustqq
-```
-
-## أساسيات اللغة
-
-### التعليقات
-
-التعليق أحادي السطر يبدأ بـ `//` ويستمر إلى نهاية السطر:
-
-```rust
-// هذا تعليق
-let answer = 42; // ويمكن وضعه بعد تعليمة
-```
-
-### القيم والمتغيرات
-
-عرّف متغيراً باستخدام `let`، ثم حدّثه بالإسناد:
+RUST++ has five value kinds: numbers, strings, booleans, `nil`, and arrays. Numbers are floating-point values; strings use double quotes.
 
 ```rust
 let score = 10;
 score = score + 5;
-print score;
+let title = "RUST++ guide";
+let ready = true;
+let missing = nil;
 ```
 
-الأنواع المتاحة حالياً هي:
+Variables are introduced with `let`. Assignments update an existing variable. Blocks create lexical scopes; a variable declared inside a block is not visible after that block ends. Names start with a letter or `_` and may contain letters, digits, or `_`.
 
-| النوع | أمثلة |
-| --- | --- |
-| رقم | `12`، `3.14` |
-| نص | `"مرحبا"` |
-| منطقي | `true`، `false` |
-| قيمة فارغة | `nil` |
+## Output, comments, and expressions
 
-النصوص تستخدم علامتي اقتباس مزدوجتين. تسلسلات الهروب المدعومة: `\\n` للسطر الجديد، `\\t` للمسافة الجدولية، `\\"` للاقتباس، و`\\\\` للشرطة المائلة العكسية.
-
-### الطباعة
-
-استخدم `print` لعرض قيمة. تنتهي التعليمة بـ `;`:
+`print` displays one value and requires a semicolon. Comments begin with `//` and run to the end of the line.
 
 ```rust
-print "النتيجة";
-print 2 + 3;
+// Calculate and display a result.
+print (2 + 3) * 4;
 ```
 
-يمكن جمع نصين باستخدام `+`، أو جمع رقمين؛ لا يمكن خلط رقم ونص في العملية نفسها.
+Operators, from lower to higher precedence:
 
-### العمليات والتعابير
-
-| الفئة | العمليات |
+| Operators | Meaning |
 | --- | --- |
-| حسابية | `+`، `-`، `*`، `/`، `%` |
-| مقارنة | `==`، `!=`، `<`، `<=`، `>`، `>=` |
-| منطقية | `&&`، `||`، `!` |
-| إسناد | `=` |
+| `or`, `||` | logical OR (short-circuiting) |
+| `and`, `&&` | logical AND (short-circuiting) |
+| `==`, `!=` | equality |
+| `<`, `<=`, `>`, `>=` | numeric comparisons |
+| `+`, `-` | addition/subtraction; `+` also joins strings or arrays of matching types |
+| `*`, `/`, `%` | multiplication, division, remainder |
+| `!`, `not`, unary `-` | logical negation and numeric negation |
 
-ترتيب التنفيذ من الأعلى إلى الأقل: الأقواس، `!` و`-` الأحاديان، `*` و`/` و`%`، `+` و`-`، المقارنات، المساواة، `&&`، `||`، ثم الإسناد. استخدم الأقواس لتوضيح المقصود:
+`+` accepts two numbers, two strings, or two arrays. The arithmetic and comparison operators other than `+` require numbers. Only `false` and `nil` are false-like; all other values are true-like.
 
-```rust
-let total = (2 + 3) * 4;
-print total;
-```
-
-العوامل المنطقية قصيرة الدائرة: لا يُقيّم الطرف الأيمن من `&&` إذا كان الأيسر خطأ، ولا الطرف الأيمن من `||` إذا كان الأيسر صحيحاً.
-
-### الشروط
-
-تُنفّذ كتلة `if` عندما يكون الشرط صحيحاً، ويمكن إضافة `else`:
+## Decisions and loops
 
 ```rust
 let temperature = 24;
 if temperature > 30 {
-    print "حار";
+    print "hot";
 } else {
-    print "معتدل";
+    print "comfortable";
 }
-```
 
-القيم `false` و`nil` فقط تُعامل كخطأ؛ وما عدا ذلك يُعامل كصحيح.
-
-### الحلقات
-
-استخدم `while` لتكرار كتلة ما دام الشرط صحيحاً. حدّث متغير الشرط داخل الحلقة حتى لا تستمر بلا نهاية:
-
-```rust
 let count = 0;
 while count < 3 {
     print count;
     count = count + 1;
 }
-```
 
-### النطاقات والكتل
-
-تُكتب الكتل بين `{` و`}`. المتغير المعرّف داخل كتلة لا يظهر خارجها، ويمكن للكتلة قراءة المتغيرات من النطاقات المحيطة:
-
-```rust
-let message = "من الخارج";
-{
-    let local = "محلي";
-    print message;
-    print local;
+for (let i = 0; i < 5; i = i + 1) {
+    if i == 2 { continue; }
+    if i == 4 { break; }
+    print i;
 }
-// local غير معرّف هنا
 ```
 
-### الدوال والقيم المرجعة
+The `for` header contains an initializer, condition, and increment separated by semicolons. Any clause may be omitted. `break` exits the nearest loop and `continue` starts its next iteration. Both statements require a trailing semicolon.
 
-عرّف الدالة باستخدام `fn`، وافصل الوسائط بفواصل. استخدم `return` لإرجاع قيمة؛ وإذا لم تنفّذ الدالة `return` فإنها تُرجع `nil`:
+## Arrays
+
+Arrays are mutable, zero-indexed collections. Array literals may contain values of different types, and a trailing comma is allowed.
 
 ```rust
-fn multiply(a, b) {
-    return a * b;
+let tasks = ["learn", "build", "share"];
+print tasks[0];
+tasks[1] = "test";
+push(tasks, "ship");
+print len(tasks);
+let last = pop(tasks);
+let combined = tasks + ["done"];
+```
+
+Indexing an array or string uses a non-negative integer. Strings are indexed by Unicode character. Reading or assigning an index outside an array's bounds produces a runtime error. `pop` removes and returns the last array item; calling it on an empty array is an error. `push` mutates the array and returns that array.
+
+## Functions
+
+Functions are declared with `fn`, accept comma-separated parameters, and return a value with `return`. A function without a return value produces `nil`. Functions can call themselves recursively.
+
+```rust
+fn factorial(n) {
+    if n <= 1 { return 1; }
+    return n * factorial(n - 1);
 }
 
-let product = multiply(6, 7);
-print product;
+print factorial(5);
 ```
 
-يمكن للدوال استدعاء نفسها. الحد الأقصى الحالي هو 255 وسيطاً للدالة أو لاستدعائها.
+Functions are named declarations; function values, closures, and first-class function calls are not part of v1. Up to 255 parameters and call arguments are accepted.
 
-## مثال متكامل
+## Built-in functions
+
+| Function | Description |
+| --- | --- |
+| `len(value)` | Number of array items or Unicode characters in a string. |
+| `push(array, value)` | Append an item; returns the array. |
+| `pop(array)` | Remove and return the final item. |
+| `type(value)` | Return `"number"`, `"string"`, `"boolean"`, `"nil"`, or `"array"`. |
+| `str(value)` | Convert a value to its display string. |
+| `number(value)` | Convert a number, boolean (`1`/`0`), or numeric string to a number. |
+| `input(prompt)` | Display a prompt and read one line from standard input. |
+| `assert(condition)` | Return `nil` when true-like; stop with an error when false-like. |
+
+Every built-in requires exactly the number of arguments shown. Invalid conversions, argument counts, and value types produce readable runtime errors.
+
+## Complete example
 
 ```rust
-// حساب مجموع الأعداد من 1 إلى limit
-fn sum_to(limit) {
-    let total = 0;
-    let current = 1;
-
-    while current <= limit {
-        total = total + current;
-        current = current + 1;
+fn total(numbers) {
+    let result = 0;
+    for (let i = 0; i < len(numbers); i = i + 1) {
+        result = result + numbers[i];
     }
-
-    return total;
+    return result;
 }
 
-let result = sum_to(5);
-if result == 15 {
-    print "نجح الحساب";
-} else {
-    print "تحقق من البرنامج";
-}
+let values = [4, 8, 15, 16, 23, 42];
+print "Total: " + str(total(values));
+assert(total([1, 2, 3]) == 6);
 ```
 
-## قواعد الكتابة
+## Errors and current limits
 
-- تنتهي تعريفات المتغيرات، وتعليمات `print`، والتعابير المنفّذة، وتعليمات `return` بعلامة `;`.
-- لا تحتاج كتل `if` و`else` و`while` وأجسام الدوال إلى `;` بعد `}`.
-- أسماء المتغيرات والدوال تبدأ بحرف أو `_`، ويمكن أن تحتوي أرقاماً بعد الحرف الأول.
-- الكلمات المحجوزة: `let`، `print`، `if`، `else`، `while`، `fn`، `return`، `true`، `false`، `nil`.
+Syntax errors include a source line number. Runtime errors explain common issues such as undefined names, incorrect function arity, invalid operators, division by zero, and out-of-bounds indexing. The interpreter is intentionally small: v1 does not include modules, classes, static types, closures, exception handling, async execution, or native compilation. The REPL evaluates one input line at a time; use a source file for multi-line function and block definitions.
 
-## دعم Visual Studio Code
-
-يوفر المستودع إضافة محلية للغة في `vscode-rustpp/` تشمل تلوين الصياغة، امتداد `.rustqq`، إعدادات الأقواس والتعليقات والمسافات البادئة، ومقاطعاً برمجية جاهزة.
-
-لبناء الإضافة وتثبيتها:
-
-```bash
-npm install --global @vscode/vsce
-cd vscode-rustpp
-vsce package
-code --install-extension rustpp-language-support-0.1.0.vsix
-```
-
-افتح ملف `.rustqq` في VS Code بعد التثبيت. لإزالة الإضافة:
-
-```bash
-code --uninstall-extension black-210.rustpp-language-support
-```
-
-## رسائل الأخطاء
-
-تظهر أخطاء التحليل والتنفيذ باللغة العربية مع رقم السطر لأخطاء الصياغة. من الرسائل الشائعة: نسيان `;`، استخدام متغير أو دالة غير معرّفة، تمرير عدد وسائط غير مطابق، إجراء عملية حسابية على نوع غير مناسب، أو القسمة على صفر.
-
-## حدود v0.1
-
-هذا إصدار أولي، وليس لغة كاملة الميزات أو بديلاً عن Rust. لا يدعم المفسّر حالياً المصفوفات، أو `for` و`break`، أو الأنواع الصريحة، أو `const`، أو الاستيراد والحزم، أو الهياكل، أو الإدخال من المستخدم، أو مكتبات Rust. كما أن الوضع التفاعلي ينفّذ الإدخال سطراً بسطر، لذلك اكتب كل كتلة كاملة في ملف `.rustqq` عند الحاجة. لا تستخدم أمثلة هذه الميزات حتى يضاف دعمها فعلياً.
-
-## الاختبارات
-
-شغّل اختبارات المشروع باستخدام:
-
-```bash
-cargo test
-```
-
-## خارطة طريق مقترحة
-
-1. إضافة اختبارات آلية للمحلّل والمفسّر ورسائل الأخطاء.
-2. إضافة مصفوفات وحلقة `for` ودوال مدمجة للإدخال.
-3. إضافة تشخيصات أفضل في VS Code، ثم خادم لغة عند استقرار القواعد.
-4. توثيق توافق كل ميزة مع الإصدار قبل إعلان دعمها.
+Run the test suite with `cargo test`.

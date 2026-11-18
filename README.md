@@ -1,67 +1,57 @@
-# RUST++ v0.1
+# RUST++ v1.0
 
-**RUST++** لغة برمجة مفسّرة صغيرة وسهلة البداية، مكتوبة بلغة Rust، بامتداد الملفات `.rustqq`. تجمع بين صياغة واضحة وأساسيات البرمجة العملية: المتغيرات، العمليات، الشروط، الحلقات، والدوال.
+**RUST++** is a small, friendly, dynamically typed programming language implemented in Rust. It is designed to be approachable for beginners while providing the core tools needed for real programs: variables, functions, arrays, loops, conditionals, input, and useful built-in functions.
 
-> هذا إصدار أولي (v0.1)، وليس مترجماً متوافقاً مع Rust ولا بديلاً عنها. البرنامج الحالي مفسّر تعليمي مستقل.
+RUST++ is its own interpreted language. It is not Rust syntax, a Rust compiler, or a replacement for Rust. Source files use the `.rustqq` extension.
 
-## التشغيل
+## Get started
 
-تحتاج إلى تثبيت [Rust وCargo](https://www.rust-lang.org/tools/install).
+Install [Rust and Cargo](https://www.rust-lang.org/tools/install), then run the included example:
 
 ```bash
 cargo run -- examples/hello.rustqq
 ```
 
-أو أنشئ نسخة تنفيذية:
+Build an optimized executable:
 
 ```bash
 cargo build --release
 ./target/release/rustpp examples/hello.rustqq
 ```
 
-شغّل الوضع التفاعلي بكتابة `cargo run`، واخرج بكتابة `exit`. اعرض الإصدار باستخدام `cargo run -- --version`.
+Start the interactive shell with `cargo run`. Type `exit` to leave it. Get command-line help with `cargo run -- --help` and the version with `cargo run -- --version`.
 
-## مثال
+## Your first program
 
 ```rust
-let name = "RUST++";
-print "مرحباً من " + name;
+let name = "world";
+print "Hello, " + name + "!";
 
 fn square(number) {
     return number * number;
 }
 
-let value = square(5);
-if value == 25 {
-    print "الدوال والشروط تعمل!";
-} else {
-    print "حاول مرة أخرى";
-}
-
-let count = 0;
-while count < 3 {
-    print count;
-    count = count + 1;
-}
+print square(6);
 ```
 
-## أساسيات اللغة
+## Features in v1.0
 
-- كل تعليمة تعبيرية وتعريف متغير ينتهي بـ `;`.
-- التعليقات تبدأ بـ `//`.
-- تعريف المتغير: `let score = 10;`، ويمكن تحديث متغير موجود: `score = score + 1;`.
-- القيم: الأرقام، النصوص بين علامتي اقتباس مزدوجتين، `true`، `false`، و`nil`.
-- العمليات: `+ - * / %`, المقارنة `== != < <= > >=`، والمنطق `&& || !`.
-- الكتل بين `{}`، والشروط والحلقات بصيغة `if condition { ... } else { ... }` و`while condition { ... }`.
-- الدوال بصيغة `fn name(parameter) { ... return value; }`؛ الدوال التي لا تُرجع قيمة تُرجع `nil`.
-- الأسماء تقبل الحروف والأرقام والشرطة السفلية `_`، ويجب ألا يبدأ الاسم برقم.
+- Numbers, strings, booleans, `nil`, and mutable arrays.
+- `let` variables and assignment; lexical block scopes.
+- Named functions, parameters, return values, and recursion.
+- `if` / `else`, `while`, C-style `for`, `break`, and `continue`.
+- Arithmetic, comparisons, short-circuit logic (`&&`, `||`, `!`), and word aliases (`and`, `or`, `not`).
+- Array indexing and assignment, concatenation, and built-ins: `len`, `push`, `pop`, `type`, `str`, `number`, `input`, `assert`.
+- `//` line comments, useful English diagnostics, a file runner, and an interactive shell.
 
-## حدود v0.1
+See the complete [language guide](docs/LANGUAGE.md) and runnable [examples](examples/).
 
-الإصدار الحالي يدعم أنواعاً بسيطة ونطاقات متغيرة للكتل والدوال. لا يدعم بعداً الأنواع الصريحة، أو المكتبات والحزم، أو الاستيراد، أو الهياكل، أو التوافق مع مكتبات Rust. رسائل أخطاء وقت التشغيل أساسية، والوضع التفاعلي ينفّذ كل سطر على حدة.
-
-## الاختبارات
+## Tests
 
 ```bash
 cargo test
 ```
+
+## v1 scope
+
+This is a compact, dependency-free v1 interpreter. It currently does not provide classes, modules/package management, static types, closures, exceptions, or a bytecode/native compiler. Those are future language/runtime features, not implied by the v1 syntax. Contributions and issue reports are welcome.
