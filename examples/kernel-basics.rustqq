@@ -1,0 +1,24 @@
+// تعليم مفاهيم بدء التشغيل بشكل تعليمي فقط؛ هذا المثال لا يتعامل مع العتاد.
+fn report_stage(name, ready) {
+    if ready {
+        print "[جاهز] " + name;
+    } else {
+        print "[انتظار] " + name;
+    }
+    return ready;
+}
+
+let memory_ready = report_stage("الذاكرة", true);
+let devices_ready = report_stage("الأجهزة", false);
+
+if memory_ready && devices_ready {
+    print "يمكن متابعة الإقلاع.";
+} else {
+    print "توقف الإقلاع حتى تصبح المتطلبات جاهزة.";
+}
+
+let step = 1;
+while step < 4 {
+    print "مرحلة تعليمية رقم " + step;
+    step = step + 1;
+}
