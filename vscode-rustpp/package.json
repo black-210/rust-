@@ -1,0 +1,51 @@
+{
+  "name": "rustpp-language-support",
+  "displayName": "RUST++ Language Support",
+  "description": "Syntax highlighting, .rustqq files, and snippets for the RUST++ language.",
+  "version": "0.1.0",
+  "publisher": "black-210",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "keywords": [
+    "rustpp",
+    "rust++",
+    "rustqq",
+    "language"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:rustpp"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "rustpp",
+        "aliases": ["RUST++", "rustpp"],
+        "extensions": [".rustqq"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "rustpp",
+        "scopeName": "source.rustpp",
+        "path": "./syntaxes/rustpp.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "rustpp",
+        "path": "./snippets/rustpp.json"
+      }
+    ]
+  },
+  "scripts": {
+    "package": "vsce package"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "scopeName": "source.rustpp",
+  "name": "RUST++",
+  "patterns": [
+    {"include": "#comments"},
+    {"include": "#strings"},
+    {"include": "#keywords"},
+    {"include": "#constants"},
+    {"include": "#functions"},
+    {"include": "#numbers"},
+    {"include": "#operators"},
+    {"include": "#punctuation"}
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {"name": "comment.line.double-slash.rustpp", "match": "//.*$"}
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.rustpp",
+      "begin": "\"",
+      "end": "\"",
+      "beginCaptures": {"0": {"name": "punctuation.definition.string.begin.rustpp"}},
+      "endCaptures": {"0": {"name": "punctuation.definition.string.end.rustpp"}},
+      "patterns": [
+        {"name": "constant.character.escape.rustpp", "match": "\\\\(?:[ntr\\\\\"]|.)"}
+      ]
+    },
+    "keywords": {
+      "name": "keyword.control.rustpp",
+      "match": "\\b(?:let|print|if|else|while|fn|return)\\b"
+    },
+    "constants": {
+      "name": "constant.language.rustpp",
+      "match": "\\b(?:true|false|nil)\\b"
+    },
+    "functions": {
+      "patterns": [
+        {"name": "entity.name.function.rustpp", "match": "(?<=\\bfn\\s)[A-Za-z_][A-Za-z0-9_]*"},
+        {"name": "entity.name.function.call.rustpp", "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?=\\s*\\()"}
+      ]
+    },
+    "numbers": {
+      "name": "constant.numeric.rustpp",
+      "match": "\\b[0-9]+(?:\\.[0-9]+)?\\b"
+    },
+    "operators": {
+      "name": "keyword.operator.rustpp",
+      "match": "(?:==|!=|<=|>=|&&|\\|\\||[+*/%<>=!-])"
+    },
+    "punctuation": {
+      "name": "punctuation.separator.rustpp",
+      "match": "[{}(),;]"
+    }
+  }
+}
