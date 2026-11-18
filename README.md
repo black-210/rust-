@@ -44,7 +44,11 @@ print square(6);
 - Array indexing and assignment, concatenation, and built-ins: `len`, `push`, `pop`, `type`, `str`, `number`, `input`, `assert`.
 - `//` line comments, useful English diagnostics, a file runner, and an interactive shell.
 
-See the complete [language guide](docs/LANGUAGE.md) and runnable [examples](examples/).
+See the complete [language guide](docs/LANGUAGE.md), runnable [examples](examples/), and the [systems and AI language specification](docs/V2_LANGUAGE_SPEC.md).
+
+## Important systems and AI status
+
+RUST++ v1 is an interpreter, not a systems compiler. It cannot build or boot an operating system/kernel, access physical memory or devices, or run AI models. `memory::`, `hardware::`, `cpu::`, `boot::`, and `ai::` are future design goals documented in [V2_LANGUAGE_SPEC.md](docs/V2_LANGUAGE_SPEC.md), not available APIs. The specification describes the safety boundaries and implementation milestones needed before claiming those capabilities.
 
 ## Tests
 
