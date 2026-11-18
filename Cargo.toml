@@ -1,0 +1,10 @@
+[package]
+name = "rustpp"
+version = "0.1.0"
+edition = "2021"
+description = "RUST++: a small, friendly interpreted language implemented in Rust"
+license = "MIT"
+
+[[bin]]
+name = "rustpp"
+path = "src/main.rs"
